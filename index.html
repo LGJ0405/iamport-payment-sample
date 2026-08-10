@@ -3,58 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="PortOne(아임포트) SDK 기반 결제 연동 예제">
-    <title>PortOne 결제 연동 - pay.html</title>
+    <meta name="description" content="PortOne(아임포트) SDK 기반 모던 결제 연동 예제">
+    <title>PortOne 결제 데모 - Modern Checkout</title>
     <link rel="stylesheet" href="css/style.css">
     <!-- PortOne (아임포트) 최신 SDK V1 -->
     <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
     <!-- 환경 설정 파일 -->
     <script src="config.js"></script>
-    <!-- 바닐라 JS 결제 모듈 -->
+    <!-- 애플리케이션 바닐라 JS -->
     <script src="js/app.js" defer></script>
 </head>
 <body>
     <main class="container">
         <div class="card">
             <header class="header">
-                <span class="header-badge">PortOne SDK v1</span>
-                <h1>아임포트 결제 예제</h1>
-                <p>jQuery 없이 순수 자바스크립트로 연동된 모던 결제 폼입니다.</p>
+                <span class="header-badge">PortOne Payment Demo</span>
+                <h1>간편 결제 테스트</h1>
+                <p>주문 정보를 입력하고 간편하게 결제를 테스트해 보세요.</p>
             </header>
 
             <form id="payment-form">
                 <div class="form-group">
-                    <label for="order-name">주문명</label>
+                    <label for="order-name">주문 상품명</label>
                     <div class="input-wrapper">
-                        <input type="text" id="order-name" class="input-control" value="주문명 : 테스트 상품" required>
+                        <input type="text" id="order-name" class="input-control" value="프리미엄 멤버십 (1개월)" required placeholder="상품명을 입력하세요">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label for="amount">결제 금액 (원)</label>
                     <div class="input-wrapper">
-                        <input type="number" id="amount" class="input-control" value="13000" min="100" required>
+                        <input type="number" id="amount" class="input-control" value="13000" min="100" step="100" required placeholder="금액을 입력하세요">
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="buyer-name">구매자 이름</label>
+                    <label for="buyer-name">구매자 성함</label>
                     <div class="input-wrapper">
-                        <input type="text" id="buyer-name" class="input-control" value="구매자이름" required>
+                        <input type="text" id="buyer-name" class="input-control" value="홍길동" required placeholder="이름을 입력하세요">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label for="buyer-tel">전화번호</label>
                     <div class="input-wrapper">
-                        <input type="tel" id="buyer-tel" class="input-control" value="010-1234-5678">
+                        <input type="tel" id="buyer-tel" class="input-control" value="010-1234-5678" placeholder="010-0000-0000">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label for="buyer-email">이메일</label>
                     <div class="input-wrapper">
-                        <input type="email" id="buyer-email" class="input-control" value="iamport@siot.do">
+                        <input type="email" id="buyer-email" class="input-control" value="customer@example.com" placeholder="email@example.com">
                     </div>
                 </div>
 
@@ -69,7 +69,7 @@
             </form>
 
             <footer class="footer-note">
-                🔒 Vanilla JS & Modern PortOne SDK Integration
+                🔒 안전한 PortOne SDK 연동 테스트 환경입니다.
             </footer>
         </div>
     </main>
