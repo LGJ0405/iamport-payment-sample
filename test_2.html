@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body onload="BaseSet()">
+    <form>
+        <div class="Search_sort1">
+		    <select class="Search_scale" onchange="testday(this.value)" id="term">
+                <option value="day">일간집계</option>
+                <option value="week">주간집계</option>
+                <option value="mon">월간집계</option>
+                <option value="quarter">분기집계</option>
+                <option value="Hyear">반기집계</option>
+                <option value="year">연간집계</option>
+            </select><br>
+			
+			<p>기준일</p>
+            <input type="date" class="Search_scale" id="rday" onchange="testday(term.value)"><br>
+			
+			<p>시작</p>
+            <input type="text" class="Search_scale" id="start"><br>
+			<p>끝</p>
+			<input type="text" class="Search_scale" id="end"><br>
+			
+			
+			<input type="button" class="Search_bt" id='reset' value="reset" onclick="BaseSet()">
+        </div>
+    </form>
+</body>
+<script>
+    let rdate = document.getElementById('rday');
+    
+    function BaseSet(){
+        term.value = "week";
+        rdate.valueAsDate = new Date();
+        document.getElementById('end').value = rdate.value;
+        start_day('week');
+    }
+
+    function testday(day){
+        if(day=='quarter'||day=='Hyear'||day=='year'){
+            start_mon(day);
+        }else{
+            end_day(day);
+            start_day(day);
+        }
+    }
+
+    function start_day(SD){
+        var d = rdate.valueAsDate;
+        if(SD=='week'){
+            d.setDate(d.getDate() - 7);
+        }else if(SD=='mon'){
+            d.setDate(1);
+        }
+        let Mon = d.getMonth()+1;
+        if(Mon<10){
+            Mon = '0'+Mon;
+        }	
+        let day = d.getDate();
+        if(day<10){
+            day = '0'+day;
+        }
+        document.getElementById('start').value = d.getFullYear()+'-'+Mon+'-'+day;
+    }
+    function end_day(ED){
+        if(ED=='day'||ED=='week'){
+            document.getElementById('end').value = rdate.value;
+        }else{
+            var d = rdate.valueAsDate;
+            if(ED=='mon'){
+                d.setDate(1);
+                d.setMonth(d.getMonth() +1);
+                d.setDate(1-1);
+            }
+            let Mon = d.getMonth()+1;
+            if(Mon<10){
+                Mon = '0'+Mon;
+            }
+            let day = d.getDate();
+            if(day<10){
+                day = '0'+day;
+            }
+            document.getElementById('end').value = d.getFullYear()+'-'+Mon+'-'+day;
+        }    
+    }
+    function start_mon(SM){
+        var d = rdate.valueAsDate;
+        if(SM=='quarter'){
+            d.setDate(1);
+            if(d.getMonth()<3){
+                d.setMonth(1);
+            }
+            else if(d.getMonth()<6){
+                d.setMonth(4);
+            }
+            else if(d.getMonth()<9){
+                d.setMonth(7);
+            }
+            else{
+                d.setMonth(10);
+            }
+            end_mon(d.getMonth()+2);
+        }else if(SM=='Hyear'){
+            if(d.getMonth()<6){
+                d.setMonth(1);
+            }else{
+                d.setMonth(7);
+            }
+            end_mon(d.getMonth()+5);
+        }else{
+            d.setMonth(1);
+            end_mon(12);
+        }
+        
+        let Mon = d.getMonth();
+        if(Mon<10){
+            Mon = '0'+Mon;
+        }
+        document.getElementById('start').value = d.getFullYear()+'-'+Mon;
+    }
+    function end_mon(EM){
+        var d = rdate.valueAsDate;
+        let Mon = EM;
+        if(Mon<10){
+            Mon = '0'+Mon;
+        }
+        document.getElementById('end').value = d.getFullYear()+'-'+Mon;
+    }
+</script>
+</html>

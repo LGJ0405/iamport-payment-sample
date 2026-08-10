@@ -1,0 +1,10 @@
+# API 키 및 설정 파일 (실제 민감정보가 들어있는 파일)
+config.js
+.env
+.env.local
+
+# OS / IDE 설정 파일
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
