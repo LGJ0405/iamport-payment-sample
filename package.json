@@ -1,0 +1,15 @@
+{
+  "name": "iamport-payment-sample",
+  "version": "1.0.0",
+  "description": "PortOne(구 아임포트) SDK 기반의 결제 체크아웃 및 SQLite 주문 저장 예제",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "better-sqlite3": "^11.1.2",
+    "cors": "^2.8.5",
+    "express": "^4.19.2"
+  }
+}

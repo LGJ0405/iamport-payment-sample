@@ -3,6 +3,11 @@ config.js
 .env
 .env.local
 
+# SQLite DB & Node Modules
+orders.db
+*.db
+node_modules/
+
 # OS / IDE 설정 파일
 .DS_Store
 Thumbs.db

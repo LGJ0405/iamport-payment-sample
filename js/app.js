@@ -1,5 +1,6 @@
 /**
  * PortOne (아임포트) 카카오페이 / 토스페이 결제 연동 바닐라 JS 스크립트
+ * (SQLite DB 주문 정보 자동 저장 연동 포함)
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -71,7 +72,7 @@ function handlePayment(selectedPg) {
         buyer_tel: buyerTel || '010-0000-0000'
     };
 
-    // 토스페이 선택 시 포트원 공식 AI 샘플 규격 적용: pay_method: 'tosspay' & channelKey
+    // 토스페이 선택 시 pay_method: 'tosspay' 및 channelKey 전달
     if (selectedPg.includes('tosspay')) {
         payData.pay_method = 'tosspay';
         if (typeof CONFIG !== 'undefined' && CONFIG.tosspay_v2) {
@@ -90,17 +91,52 @@ function handlePayment(selectedPg) {
     IMP.request_pay(payData, (rsp) => {
         console.log('[포트원 결제 응답 전체]', rsp);
 
-        // rsp.success가 true이거나, 에러가 없고 imp_uid가 성공적으로 수신된 경우 성공 처리
+        // rsp.success가 true이거나, 에러가 없고 imp_uid가 수신된 경우 성공 처리
         const isSuccess = rsp.success === true || Boolean(rsp.imp_uid && !rsp.error_code && !rsp.error_msg);
 
         if (isSuccess) {
             console.log(`[결제 성공] imp_uid: ${rsp.imp_uid}, merchant_uid: ${rsp.merchant_uid}`);
             showToast('결제가 성공적으로 완료되었습니다!', 'success');
+
+            // SQLite DB에 주문 정보 저장 백엔드 API 호출
+            saveOrderToSQLite({
+                imp_uid: rsp.imp_uid,
+                merchant_uid: rsp.merchant_uid,
+                order_name: orderName,
+                amount: amount,
+                buyer_name: buyerName,
+                buyer_email: buyerEmail,
+                buyer_tel: buyerTel,
+                pg_provider: selectedPg,
+                status: 'PAID'
+            });
         } else {
             console.error('결제 실패 상세:', rsp);
             const errorMsg = rsp.error_msg || rsp.error_code || '알 수 없는 결제 오류가 발생했습니다.';
             showToast(`결제 실패: ${errorMsg}`, 'error');
         }
+    });
+}
+
+/**
+ * SQLite DB에 주문 정보를 저장하는 API 호출 함수
+ */
+function saveOrderToSQLite(orderData) {
+    fetch('/api/orders', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(orderData)
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            console.log('✅ SQLite DB 저장 성공:', data);
+        } else {
+            console.warn('⚠️ DB 저장 실패:', data.message);
+        }
+    })
+    .catch(err => {
+        console.error('❌ DB 저장 서버 통신 에러:', err);
     });
 }
 
